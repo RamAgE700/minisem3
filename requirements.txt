@@ -50,7 +50,7 @@ google-auth==2.34.0
 google-auth-httplib2==0.2.0
 google-cloud-core==2.4.1
 
-protobuf==5.26.0
+
 google-ai-generativelanguage==0.6.10
 google-api-core==2.19.2
 google-cloud-translate==3.16.0
