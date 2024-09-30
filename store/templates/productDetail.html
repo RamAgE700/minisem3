@@ -166,7 +166,7 @@
                     </strong>
                 </h4>
             <div>
-                <form action="/#{{ product.id }}" method="POST">
+                <form action="/home/#{{ product.id }}" method="POST">
                     {% csrf_token %}
                     <input type="hidden" value="{{ product.id }}" name="product">
                     {% if product|is_in_cart:request.session.cart %}

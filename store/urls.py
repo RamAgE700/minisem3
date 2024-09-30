@@ -22,7 +22,7 @@ from store.views.suDash import suDash
 from store.views.suplistview import viewprdlist
 from store.views.game_optimizer import GameOptimizerView
 from store.views.recomention import game_recommendation_view
-from store.views.bot import chat_view
+from store.views.bot import *
 from django.views.generic import TemplateView
 urlpatterns = [
     path('home/',Home.as_view(), name='home'),
@@ -68,6 +68,7 @@ urlpatterns = [
     path('deleteproduct/<int:product_id>/', admincnt.delete_product, name='delete_product'),
     path('supplier_product_pdf/<int:product_id>/', get_supplier_product_pdf, name='supplier_product_pdf'),
     path('viewprdlist/', viewprdlist, name='viewprdlist'),
+    path('visualizations/', visualizations, name='visualizations'),
 
 
     
@@ -83,9 +84,9 @@ urlpatterns = [
     path('admins/editproduct', admincnt.editproduct, name='editproduct'),
     path('admins/game-sales-report', game_sales_report, name='game_sales_report'),
        # Renders the main chat page
-    path('chat/', chat_view, name='chat'),
-    path('chatbot/', TemplateView.as_view(template_name='chat.html'), name='chatbot'),
-     path('visualizations/', visualizations, name='visualizations'),
+    path('chatbot/', chatbot_view, name='chatbot'),  # Chatbot page
+    
+    
     
     
 ]

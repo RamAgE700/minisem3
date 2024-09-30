@@ -1,55 +1,52 @@
-# views.py
+import re
+import requests
+from django.shortcuts import render
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import google.generativeai as genai
-import os
 
-# Set your API key
-os.environ["GEMINI_API_KEY"] = "AIzaSyA_VjcdSNFywoWL5eDjJnWNbgIyOaBAIOE"
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+# Your Google Gemini API key
+API_KEY = 'AIzaSyAlkMqarUExaxDatDQ0t-1udhy9H7vrzLM'
+API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent'
 
-# Create the model configuration
-generation_config = {
-    "temperature": 1,
-    "top_p": 0.95,
-    "top_k": 64,
-    "max_output_tokens": 8192,
-    "response_mime_type": "text/plain",
-}
+# Function to generate a response from the Gemini API
+def generate_response(user_query):
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    data = {
+        'contents': [{
+            'parts': [{
+                'text': user_query
+            }]
+        }]
+    }
+    # Make a request to the Google Gemini API
+    response = requests.post(f"{API_URL}?key={API_KEY}", headers=headers, json=data)
+    
+    if response.status_code == 200:
+        response_data = response.json()
+        # Extract and return the response text
+        if 'candidates' in response_data and len(response_data['candidates']) > 0:
+            raw_text = response_data['candidates'][0]['content']['parts'][0]['text']
+            return clean_response(raw_text)  # Clean the response text
+        else:
+            return 'No candidates found in response.'
+    else:
+        return f"Error: {response.status_code} - {response.text}"
 
-model = genai.GenerativeModel(
-    model_name="gemini-1.5-flash",
-    generation_config=generation_config,
-)
+# Function to clean the bot's response
+def clean_response(response_text):
+    # Remove specific patterns like '**Section:**' and standalone '**' or '*' symbols
+    cleaned_text = re.sub(r'\*\*\s*([^*]+?)\s*\*\*', r'\1', response_text)  # Remove **Section:** style
+    cleaned_text = re.sub(r'\*\*|__|\*', '', cleaned_text)  # Remove any remaining **, __, or *
+    cleaned_text = ' '.join(cleaned_text.split())  # Remove extra spaces
+    return cleaned_text.strip()
 
-@csrf_exempt  # Disable CSRF protection for testing; use with caution
-def chat_view(request):
+def chatbot_view(request):
+    # Initialize chat with a welcome message
+    if request.method == 'GET':
+        return render(request, 'chatbot.html', {'initial_message': "Which game would you like information about?"})
+    
     if request.method == 'POST':
-        # Get the user's message from the request
-        user_message = request.POST.get('message')
-
-        # Create a chat session
-        chat_session = model.start_chat(
-            history=[
-                {
-                    "role": "user",
-                    "parts": [
-                        "I want to travel to a location in a selected car. Please provide the details.",
-                    ],
-                },
-                {
-                    "role": "model",
-                    "parts": [
-                        "Sure! Please tell me your travel location, the car you selected, the number of people, and the number of days.",
-                    ],
-                },
-            ]
-        )
-
-        # Send the user's message to the chat session and get a response
-        response = chat_session.send_message(user_message)
-
-        # Return the response as JSON
-        return JsonResponse({'response': response.text})
-
-    return JsonResponse({'error': 'Method not allowed'}, status=405)  # Handle non-POST requests
+        user_input = request.POST.get('user_input')
+        bot_response = generate_response(user_input)
+        return JsonResponse({'response': bot_response})

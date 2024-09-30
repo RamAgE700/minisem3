@@ -1,0 +1,219 @@
+{% extends 'recom_base.html' %}
+{% load cart %}
+{% block title %}AI Chatbot - GameMate{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h3 class="mb-0">
+                        <i class="fas fa-robot mr-2"></i>
+                        GameMate AI Chatbot
+                    </h3>
+                </div>
+                <div id="chat-box" class="chat-box">
+                    <div class="message bot-response">
+                        <div class="message-content">
+                            {{ initial_message }}
+                        </div>
+                    </div>
+                </div>
+                <div class="input-area">
+                    <input type="text" id="user-input" class="form-control" placeholder="Type a game name or ask a question...">
+                    <button class="btn btn-primary send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.chat-container {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.chat-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.chat-header {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.chat-box {
+    height: 400px;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+
+.message {
+    max-width: 80%;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    line-height: 1.4;
+    position: relative;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.message.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.bot-response {
+    background-color: #e9ecef;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+    box-shadow: -2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.user-message {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.message-content {
+    word-wrap: break-word;
+}
+
+.input-area {
+    display: flex;
+    padding: 20px;
+    background-color: #f1f2f6;
+}
+
+#user-input {
+    flex-grow: 1;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 16px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.send-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.send-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+</style>
+
+<script>
+function sendMessage() {
+    var userInput = document.getElementById('user-input');
+    var userMessage = userInput.value.trim();
+    if (userMessage) {
+        appendMessage(userMessage, 'user-message');
+        userInput.value = '';
+        
+        fetch('/chatbot/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: new URLSearchParams({
+                'user_input': userMessage
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            appendMessage(data.response, 'bot-response');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            appendMessage('Sorry, there was an error processing your request.', 'bot-response');
+        });
+    }
+}
+
+function appendMessage(message, className) {
+    var chatBox = document.getElementById('chat-box');
+    var messageDiv = document.createElement('div');
+    messageDiv.className = 'message ' + className;
+    var contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+    contentDiv.textContent = message;
+    messageDiv.appendChild(contentDiv);
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    
+    // Trigger reflow to enable animation
+    void messageDiv.offsetWidth;
+    messageDiv.classList.add('show');
+}
+
+document.getElementById('user-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        sendMessage();
+    }
+});
+
+// Add subtle hover effect to messages
+document.addEventListener('mousemove', function(e) {
+    const messages = document.querySelectorAll('.message');
+    messages.forEach(message => {
+        const rect = message.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        message.style.transform = `perspective(1000px) rotateY(${(x - rect.width / 2) / 50}deg) rotateX(${-(y - rect.height / 2) / 50}deg)`;
+    });
+});
+</script>
+{% endblock %}

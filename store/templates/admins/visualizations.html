@@ -3,49 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Visualizations</title>
+    <title>Game Shop Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5f7fa;
+            --text-color: #333;
+            --border-color: #e0e0e0;
+            --sidebar-bg: #333;
+            --sidebar-hover: #555;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
         }
+
+        .navbar {
+            background-color: var(--sidebar-bg);
+            overflow: hidden;
+            text-align: right;
+            padding: 10px 20px;
+        }
+
+        .navbar a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 20px;
+            text-align: center;
+            background-color: #444;
+            font-size: 24px;
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            padding: 15px;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+        }
+
+        .menu li:hover {
+            background-color: var(--sidebar-hover);
+        }
+
+        .submenu {
+            list-style: none;
+            padding: 0;
+            display: none;
+        }
+
+        .menu li:hover .submenu {
+            display: block;
+        }
+
+        .submenu li {
+            padding: 10px;
+            background-color: #222;
+            border-bottom: 1px solid #444;
+        }
+
+        .submenu li:hover {
+            background-color: #333;
+        }
+
+        .sidebar a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
         .container {
-            width: 80%;
+            max-width: 1200px;
             margin: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
         }
+
         h1, h2 {
             text-align: center;
+            color: var(--primary-color);
         }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            margin-top: 40px;
+            font-size: 2em;
+        }
+
         .chart-container {
             text-align: center;
             margin-top: 40px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         form {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        input[type="month"] {
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #357abd;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        p {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            label, input[type="month"], button {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Game Shop Sales Visualizations</h1>
+    <div class="navbar">
+        <a href="{% url 'index' %}">Riot Store</a>
+        <a href="{% url 'logouts' %}">Log Out</a>
+    </div>
 
-        <!-- Month Selection Form -->
-        <form method="GET" action="{% url 'visualizations' %}">
-            <label for="month">Select Month:</label>
-            <input type="month" id="month" name="month" value="{{ month }}">
-            <button type="submit">Generate Visualizations</button>
-        </form>
+    <div class="sidebar">
+        <div class="logo">Admin Dashboard</div>
+        <ul class="menu">
+            <li><a href="{% url 'index' %}">Dashboard</a></li>
+            <li>Product Management
+                <ul class="submenu">
+                    <li><a href="{% url 'addproduct' %}">Add Product</a></li>
+                    <li><a href="{% url 'viewproduct' %}">Product List</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'addcats' %}">Category</a></li>
+            <li><a href="{% url 'viewcat' %}">Category List</a></li>
+            <li><a href="{% url 'viewporder' %}">Order</a></li>
+            <li><a href="{% url 'supplier_requests' %}">Supply Request</a></li>
+            <li><a href="{% url 'in_stock_page' %}">Stock</a></li>
+            <li><a href="{% url 'game_sales_report' %}">Report</a></li>
+            <li><a href="{% url 'visualizations' %}">Visualization</a></li>
+            <li><a href="{% url 'logouts' %}">Log Out</a></li>
+        </ul>
+    </div>
 
-        <!-- Visualization Section -->
-        <div class="chart-container">
-            <h2>Sales by Game</h2>
-            {% if sales_chart %}
-                <img src="data:image/png;base64,{{ sales_chart }}" alt="Sales by Game Chart"/>
-            {% else %}
-                <p>No sales data available for the selected month.</p>
-            {% endif %}
+    <div class="main-content">
+        <div class="container">
+            <h1>Game Shop Sales Visualizations</h1>
+
+            <!-- Month Selection Form -->
+            <form method="GET" action="{% url 'visualizations' %}">
+                <label for="month">Select Month:</label>
+                <input type="month" id="month" name="month" value="{{ month }}">
+                <button type="submit">Generate Visualizations</button>
+            </form>
+
+            <!-- Visualization Section -->
+            <div class="chart-container">
+                <h2>Sales by Game</h2>
+                {% if sales_chart %}
+                    <img src="data:image/png;base64,{{ sales_chart }}" alt="Sales by Game Chart"/>
+                {% else %}
+                    <p>No sales data available for the selected month.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
-</body>
+
+
 </html>
