@@ -1,0 +1,186 @@
+{% extends 'admins/cphder.html' %}
+{% load static %}
+
+{% block maincontent %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Sales Report</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #f9f9f9;
+            --text-color: #333;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--secondary-color);
+        }
+
+        h1 {
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            margin-top: 2rem;
+            font-size: 1.8rem;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        label {
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+
+        input[type="month"] {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 1rem 0;
+            background-color: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Game Shop Sales Report</h1>
+        
+        <!-- Month and Year Selection Form -->
+        <form method="GET" action="{% url 'game_sales_report' %}">
+            <label for="month">Select Month:</label>
+            <input type="month" id="month" name="month" value="{{ month }}">
+            <button type="submit">Generate Report</button>
+            <button type="submit" name="export" value="true">Export to Excel</button>
+        </form>
+        
+        <h2>Sales Report for {{ month }}</h2>
+        <p><strong>Total Sales: </strong>${{ total_sales }}</p>
+        
+        <h2>Game-wise Sales</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Game</th>
+                    <th>Unit Price ($)</th>
+                    <th>Quantity Sold</th>
+                    <th>Total Sales Amount ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in product_sales %}
+                <tr>
+                    <td>{{ item.product__name }}</td>
+                    <td>${{ item.unit_price|floatformat:2 }}</td>
+                    <td>{{ item.total_quantity }}</td>
+                    <td>${{ item.total_amount|floatformat:2 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No sales data available for the selected month.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+{% endblock maincontent%}

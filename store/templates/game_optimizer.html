@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Optimizer</title>
+</head>
+<body>
+    <h1>Game Optimizer</h1>
+
+    <!-- Game Optimization Form -->
+    <form action="{% url 'game_optimizer' %}" method="POST">
+        {% csrf_token %}
+        
+        <label for="game_title">Game Title:</label>
+        <input type="text" id="game_title" name="game_title" required><br><br>
+
+        <label for="cpu">CPU:</label>
+        <input type="text" id="cpu" name="cpu" required><br><br>
+
+        <label for="gpu">GPU:</label>
+        <input type="text" id="gpu" name="gpu" required><br><br>
+
+        <label for="ram">RAM (GB):</label>
+        <input type="number" id="ram" name="ram" required><br><br>
+
+        <label for="resolution">Resolution:</label>
+        <input type="text" id="resolution" name="resolution" placeholder="e.g., 1920x1080" required><br><br>
+
+        <input type="submit" value="Optimize">
+    </form>
+
+    <!-- Optimized Game Settings Output -->
+    {% if settings %}
+        <h2>Optimized Settings for {{ settings.game_title }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>In-Game Settings</th>
+                    <th>Current Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for setting, value in settings.optimized %}
+                <tr>
+                    <td>{{ setting }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+</body>
+</html>

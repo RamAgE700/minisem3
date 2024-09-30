@@ -1,0 +1,208 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Connect Plus</title>
+    <!-- plugins:css -->
+  
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            text-align: right; /* Aligns the content to the left */
+          }
+          .navbar a {
+            display: inline-block; /* Ensures the links are displayed in a line */
+            color: white;
+            text-align: center; /* Centers the text within the link */
+            padding: 14px 20px;
+            text-decoration: none;
+          }
+          .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+          }
+          @media screen and (max-width: 600px) {
+            .navbar a {
+              float: none;
+              display: block;
+              {% comment %} text-align: left; {% endcomment %}
+            }
+          }  
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #333;
+            color: white;
+            position: fixed;
+        }
+        
+        .logo {
+            padding: 10px;
+            text-align: center;
+            background-color: #444;
+            font-size: 24px;
+        }
+        
+        .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .menu li {
+            padding: 15px;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+        }
+        
+        .menu li:hover {
+            background-color: #555;
+        }
+        
+        .submenu {
+            list-style: none;
+            padding: 0;
+            display: none;
+        }
+        
+        .menu li:hover .submenu {
+            display: block;
+        }
+        
+        .submenu li {
+            padding: 10px;
+            background-color: #222;
+            border-bottom: 1px solid #444;
+        }
+        
+        .submenu li:hover {
+            background-color: #333;
+        }
+        
+        /* Remove link color */
+        .sidebar a {
+            color: inherit; /* Makes the link color the same as the parent element */
+            text-decoration: none; /* Optional: removes underline from links */
+        }
+        .main-content {
+            margin-left: 250px; /* Adjust this value to match the width of your sidebar */
+            padding: 20px; /* Optional: Adds some spacing inside the main content area */
+        }
+  </style>
+  </head>
+  <body>
+    
+    <div class="navbar">
+        <a href="{% url 'supplier_dashboard'  %}">Riot Store</a>
+        <a href="{% url 'supplier_logout'  %}">Log Out</a>
+        
+      </div>
+    <div class="sidebar">
+        <div class="logo">Supplier</div>
+        <ul class="menu">
+            <li><a  href="{% url 'su_dashboard'  %}"> </i> Dashboard</li>
+            
+                
+            <li><a  href="{% url 'supplier_dashboard' %}">Add Product</li>
+          
+            <li><a  href="{% url 'view_messages' %}">Requests</li>
+                <li><a  href="{% url 'viewprdlist' %}">Added Products </li>
+            
+                <!-- Add submenu items here -->
+            </li>
+            {% comment %} <li>Documentation
+                <!-- Add submenu items here -->
+            </li> {% endcomment %}
+        </ul>
+    </div>
+   
+    
+      <!-- partial -->
+     
+              
+             
+              {% comment %} <li class="nav-item">
+                  <a class="nav-link" href="{% url 'addcats' %}">
+                      <span><i class="mdi menu-icon"></i></span>
+                      <span class="menu-title">Category</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'viewcat' %}">
+                      <span><i class="mdi menu-icon"></i></span>
+                      <span class="menu-title">Category List</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'addproduct' %}">
+                      <span><i class="mdi menu-icon"></i></span>
+                      <span class="menu-title">Add Product</span>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'viewproduct' %}">
+                      <span><i class="mdi menu-icon"></i></span>
+                      <span class="menu-title">Product List</span>
+                  </a>
+              </li> {% endcomment %}
+              <li class="nav-item">
+                  {% comment %} <a class="nav-link" href="{% url 'viewporder' %}">
+                      <span><i class="mdi menu-icon"></i></span>
+                      <span class="menu-title">Order</span> {% endcomment %}
+                  </a>
+              </li>
+              <li class="nav-item sidebar-user-actions">
+                  {% comment %} <div class="sidebar-user-menu">
+                      <a href="{% url 'logouts' %}" class="nav-link">
+                          <i class="mdi mdi-logout menu-icon"></i>
+                          <span class="menu-title">Log Out</span> {% endcomment %}
+                      </a>
+                  </div>
+              </li>
+          </ul>
+      </nav>
+        
+
+    
+            {% block maincontent %}
+  
+            {% endblock maincontent %}
+        
+
+            
+              <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+          </div>
+          <!-- page-body-wrapper ends -->
+        </div>
+    </div>
+        <!-- container-scroller -->
+        <!-- plugins:js -->
+        <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
+        <!-- endinject -->
+        <!-- Plugin js for this page -->
+        <script src="{% static 'assets/vendors/chart.js/Chart.min.js' %}"></script>
+        <script src="{% static 'assets/vendors/jquery-circle-progress/js/circle-progress.min.js' %}"></script>
+        <!-- End plugin js for this page -->
+        <!-- inject:js -->
+        <script src="{% static 'assets/js/off-canvas.js' %}"></script>
+        <script src="{% static 'assets/js/hoverable-collapse.js' %}"></script>
+        <script src="{% static 'assets/js/misc.js' %}"></script>
+        <!-- endinject -->
+        <!-- Custom js for this page -->
+        <script src="{% static  'assets/js/dashboard.js' %}"></script>
+        <!-- End custom js for this page -->
+    
+      </body>
+    </html>

@@ -1,0 +1,145 @@
+
+{% block content %}
+<style>
+    body {
+      background-image: url("https://lolstatic-a.akamaihd.net/rso-authenticator-ui/0.49.41/assets/arcane_dsktp_centerAlignedCrd_BG_2x.jpg");
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .main-body {
+      width: 100vw;
+      height: 90vh;
+      max-width: 100%;
+      display: grid;
+      place-content: center;
+    }
+    .sign-div {
+      width: 20vw;
+      padding: 30px 50px 30px 50px;
+      background-color: white;
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      font-size: 25px;
+    }
+
+    .input-field {
+      height: 38px;
+      margin-top: 15px;
+      border: none;
+      background-color: rgba(186, 186, 186, 0.1);
+      padding-left: 10px;
+    }
+
+    ::placeholder {
+      color: rgb(87, 85, 85);
+    }
+
+    .forms {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .button {
+      margin-top: 15px;
+      height: 38px;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 20px;
+      border-radius: 50px;
+      background-color: black;
+      color: white;
+      font-size: 16px;
+      box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    }
+</style>
+<div class="main-body">
+    <div class="sign-div">
+        
+            <h1 class="title">Supplier Signup</h1>
+            <hr>
+            <form action="{% url 'suppliersignup' %}" method="POST">
+                {% if error %}
+                <small style="color:red"> {{ error.field_error }} </small>
+                <small style="color:green"> {{ error.success }} </small>
+                {% endif %}
+                {% csrf_token %}
+                <input
+                value="{{ userData.name }}"
+                class="input-field"
+                type="text"
+                required
+                name="name"
+                id="name"
+                placeholder="Enter name"
+              />
+              {% if error %}
+                    <small style="color:red"> {{ error.name_error }} </small>
+                    {% endif %}
+                {% comment %} <div class="form-group">
+                    <label for="name">Name</label>
+                    <input value="{{ userData.name }}" name="name" type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter name">
+                    {% if error %}
+                    <small style="color:red"> {{ error.name_error }} </small>
+                    {% endif %}
+                </div> {% endcomment %}
+                <input
+                value="{{ userData.email }}"
+                class="input-field"
+                type="text"
+                required
+                name="email"
+                id="email"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+              />
+              {% if error %}
+                    <small style="color:red"> {{ error.emailExits_error }} </small>
+                    {% endif %}
+                {% comment %} <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input value="{{ userData.email }}" name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                    {% if error %}
+                    <small style="color:red"> {{ error.emailExits_error }} </small>
+                    {% endif %}
+                </div> {% endcomment %}
+              
+                
+            
+                    <input value="{{ userData.phone }}" name="phone" type="number" class="input-field" id="phone" placeholder="Enter Phone Number">
+                    {% if error %}
+                    <small style="color:red"> {{ error.phoneNumber_error }} </small>
+                    {% endif %}
+                
+                
+                    <input name="password" type="password" class="input-field" id="password" placeholder="Enter Password">
+                    {% if error %}
+                    <small style="color:red">{{ error.notMatch_error }}
+                        {{ error.minPass_error }} </small>
+                    {% endif %}
+               
+           
+                    <input name="confirm_password" type="password" class="input-field" id="confirm_password" placeholder="Confirm Password">
+                    {% if error %}
+                    <small style="color:red"> {{ error.notMatch_error }}
+                        {{ error.minPass_error }} </small>
+                    {% endif %}
+                
+               
+                    <button type="submit" class="button">Sign Up</button>
+                </form>
+                <a href={% url 'supplierlogin' %}>Login</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

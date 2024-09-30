@@ -1,0 +1,135 @@
+{% extends 'admins/cphder.html' %}
+{% load static %}
+
+{% block maincontent %}
+<style>
+  <style>
+    .content-spacing {
+      margin-top: 100px; /* Adjust the space as needed */
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+    .container {
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+    input[type="text"],
+    input[type="number"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    textarea {
+        height: 100px;
+        resize: vertical;
+    }
+    .button {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    <style>
+     
+   
+</style>
+<div class="container content-spacing">   
+      
+    <div class="row">
+       
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Product Details </h4>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+          {% endif %}
+            
+                            <form class="forms-sample" action="" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                {% for i in pd %}
+              <div class="form-group">
+                <label for="exampleInputUsername1">Product</label>
+                <input type="text" value="{{ i.name }}" class="form-control" required="" name="sname" id="exampleInputUsername1" >
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Category</label>
+                <select class="form-control" name="sp">
+                    {% for i in c %}
+                    <option value="{{ i.id }}">{{ i.name }}</option>
+                    {% endfor %}
+              </select></div>
+            
+              <div class="form-group">
+                <label for="exampleInputEmail1">Price</label>
+                <input type="number" value="{{ i.price }}" class="form-control" required="" name="sprce" id="exampleInputEmail1" >
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Description</label>
+                <input type="text" value="{{ i.description }}" class="form-control" required="" name="sdic" id="exampleInputEmail1" >
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Image</label>
+                <input type="file" class="form-control" required="" name="prdimg" id="exampleInputPassword1" >
+              </div>
+              
+              <div class="form-group">
+                <label for="quantityInput">Quantity</label>
+                <input type="number" class="form-control" required="" name="spqty" id="exampleInputEmail" oninput="validateQuantity(this)">
+                <small id="quantityError" class="form-text text-danger" style="display: none;">Quantity cannot be negative.</small><br>
+                <script>
+                  function validateQuantity(input) {
+                    var value = input.value;
+                    var error = document.getElementById('quantityError');
+                    if(value < 0) {
+                      error.style.display = 'block';
+                    } else {
+                      error.style.display = 'none';
+                    }
+                  }
+                </script>
+              <br>
+              <button type="submit" name="sav" class="btn btn-primary mr-2">Save</button>
+              <button type="button" class="btn btn-light">
+                <a href="{% url 'viewproduct' %}" style="color: inherit; text-decoration: none;">Cancel</a>
+            </button>
+              {% endfor %}
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock maincontent%}

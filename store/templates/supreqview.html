@@ -1,0 +1,87 @@
+{% extends 'supnav.html' %}
+
+{% load static %}
+
+{% block maincontent %}
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+        }
+        /* Adjust table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .btn-fw {
+            width: 100px; /* Fixed width for buttons */
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Supply Requests</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th> Name</th>
+                        
+                        
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Request Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in supply_requests %}
+                        <tr>
+                            <td>{{ request.name }}</td>
+                            
+                            
+                            <td>{{ request.category }}</td>
+                            <td>{{ request.quantity }}</td>
+                            <td>{{ request.request_date }}</td>
+                            <td>
+                                {% if request.status == 'pending' %}
+                                    <a href="{% url 'complete_request' request.id %}" class="btn btn-primary btn-fw">Complete</a>
+                                    <a href="{% url 'reject_request' request.id %}" class="btn btn-primary btn-fw">Reject</a>
+                                   
+                                    {% else %}
+                                    {{ request.status }}
+                                    {% endif %}
+                                    <a href="{% url 'delete_request' request.id %}" class="btn btn-danger btn-fw">Delete</a>
+                            </td>
+                            
+                        </tr>
+                        
+                    {% endfor %}
+                    <a href="{% url 'delete_rejected_requests' %}" class="btn btn-danger">Delete All Rejected Requests</a>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock maincontent%}

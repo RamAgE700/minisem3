@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Visualizations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .chart-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Game Shop Sales Visualizations</h1>
+
+        <!-- Month Selection Form -->
+        <form method="GET" action="{% url 'visualizations' %}">
+            <label for="month">Select Month:</label>
+            <input type="month" id="month" name="month" value="{{ month }}">
+            <button type="submit">Generate Visualizations</button>
+        </form>
+
+        <!-- Visualization Section -->
+        <div class="chart-container">
+            <h2>Sales by Game</h2>
+            {% if sales_chart %}
+                <img src="data:image/png;base64,{{ sales_chart }}" alt="Sales by Game Chart"/>
+            {% else %}
+                <p>No sales data available for the selected month.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

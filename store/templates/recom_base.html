@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %} {% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .category-dropdown {
+            max-height: 200px; /* Set the maximum height for the dropdown */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+        body, html {
+            height: 100%;
+            background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='20' height='20' patternTransform='scale(1) rotate(45)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(0, 0%, 97%, 1)'/><path d='M 10,-2.55e-7 V 20 Z M -1.1677362e-8,10 H 20 Z'  stroke-width='2' stroke='hsla(0, 0%, 95%, 1)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>")
+        }
+        .navbar.navbar-expand-lg.navbar-light.bg-light {
+            background-color: #1f1f1f !important; /* Set the background color to dark gray */
+        }
+    
+        .navbar.navbar-expand-lg.navbar-light.bg-light .nav-link {
+            color: #fff !important; /* Set the text color of nav links to white */
+        }
+    
+        .navbar.navbar-expand-lg.navbar-light.bg-light .nav-link:hover {
+            color: #ccc !important; /* Set the hover color of nav links to light gray */
+        }
+    
+        .navbar.navbar-expand-lg.navbar-light.bg-light .dropdown-menu {
+            background-color: #1f1f1f !important; /* Set the background color of the dropdown menu to dark gray */
+        }
+    
+        .navbar.navbar-expand-lg.navbar-light.bg-light .dropdown-item {
+            color: #fff !important; /* Set the text color of dropdown items to white */
+        }
+    
+        .navbar.navbar-expand-lg.navbar-light.bg-light .dropdown-item:hover {
+            background-color: #555 !important; /* Set the hover background color of dropdown items */
+        }
+      
+       
+        .navbar-brand {
+            color: #fff; /* Set the text color to white */
+        }
+        header h1 {
+            display: inline-block;
+            font-size: 24px;
+            color: #fff;
+            margin-right: 10px;
+        }
+        footer {
+            background-color: #1f1f1f;
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+
+        footer .footer-content {
+            margin: 20px 0;
+        }
+
+        footer p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        footer ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        footer ul li {
+            margin: 0 10px;
+        }
+
+        footer ul li a {
+            color: #888;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        footer ul li a:hover {
+            color: #1E90FF;
+        }
+        footer {
+        background-color: #121212; /* Updated background color */
+        padding: 40px 0;
+        text-align: center;
+        border-top: 1px solid #333;
+    }
+    </style>
+</head>
+
+<body>
+    <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <h1 ><a  class="nav-link" href="{% url 'home' %}">GameMate</a></h1>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                
+            </ul>
+            
+            <form class="form-inline">
+            
+                <ul class="navbar-nav mr-auto">
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'allpage' %}">Home</a>
+                    </li>
+                   
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Shop</a>
+                    </li>
+                    
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://video-game-recommendation-system-dux6yja3wbghwlejvjhsqj.streamlit.app/">Streamlit</a>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        
+        </nav>
+        {% if signupSuccess %}
+            {{ signupSuccess }}
+        {% endif %}
+    
+        {% block content %}
+        {% endblock %}
+    
+        <!-- Footer section -->
+      
+    </header>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 GameMate. All Rights Reserved.</p>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <p>Follow us on:
+                <a href="#">Twitter</a> | 
+                <a href="#">Facebook</a> | 
+                <a href="#">Instagram</a>
+            </p>
+        </div>
+    </footer>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </body>
+    
+    </html>

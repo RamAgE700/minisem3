@@ -1,0 +1,104 @@
+{% extends 'admins/cphder.html' %}
+{% load static %}
+<div class="main-content">
+{% block maincontent %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+.container {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    flex: 1 1 300px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+p {
+    color: #666;
+    font-size: 24px;
+    margin: 0;
+}
+.graph {
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.main-content {
+  margin-left: 250px; /* Adjust this value to match the width of your sidebar */
+  padding: 20px; /* Optional: Adds some spacing inside the main content area */
+}
+.stock-item {
+  margin-bottom: 20px; /* Adds 20px of space below each stock item */
+}
+</style>
+<div class="main-content">
+  <h2 style="text-align: center;">Analytics Dashboard </h2>
+  <div class="container">
+    <div class="card">
+        <h2>Total Orders</h2>
+        <p>{{ total_orders }}</p>
+    </div>
+    <div class="card">
+        <h2>Total Products Available</h2>
+        <p>{{ total_products }}</p>
+    </div>
+    <div class="card">
+        <h2>Total Profit</h2>
+        <p>{{ total_profit }}</p>
+    </div>
+    <div class="card">
+        <h2>Total Users</h2>
+        <p>{{ total_users }}</p>
+    </div>
+  </div>
+    
+
+{% comment %} <div class="content-spacing">
+  <div class="stock-management">
+      <h2>Stock Management Details</h2>
+      <p>Total Products Available: {{ total_products }}</p>
+      <p>Total Orders: {{ total_orders }}</p>
+      <p>Total Users: {{ total_users }}</p>
+      <p>Total Profit: {{ total_profit }}</p>
+  </div> {% endcomment %}
+  <h2 style="text-align: center;">Product Stock Details </h2>
+  <div class="card">
+
+    
+    {% for product in products_stock %}
+        <div class="stock-item">
+            <strong>{{ product.name }}</strong>:
+            {% if product.quantity == 0 %}
+                <span style="color: red;">{{ product.quantity }} in stock - Stock Out!</span>
+            {% else %}
+                {{ product.quantity }} in stock
+            {% endif %}
+        </div>
+    {% endfor %}
+</div>
+</div>
+</div>
+{% endblock maincontent %}
+</div>

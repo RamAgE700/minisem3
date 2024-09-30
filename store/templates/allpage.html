@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Game Recommendation System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: #1f1f1f;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        header h1 {
+            display: inline-block;
+            font-size: 24px;
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        header p {
+            display: inline-block;
+            color: #888;
+            margin: 0;
+        }
+
+        nav {
+            float: right;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+
+        nav ul li a.active, nav ul li a:hover {
+            color: #1E90FF;
+        }
+
+        nav ul li a.login {
+            padding: 5px 15px;
+            background-color: #1E90FF;
+            color: #fff;
+            border-radius: 20px;
+        }
+
+        .hero {
+            background-image: url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='20' height='20' patternTransform='scale(1) rotate(45)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(0, 0%, 97%, 1)'/><path d='M 10,-2.55e-7 V 20 Z M -1.1677362e-8,10 H 20 Z'  stroke-width='2' stroke='hsla(0, 0%, 95%, 1)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(0,0)' fill='url(%23a)'/></svg>");
+            color: #000000;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .hero .cta-button {
+            background-color: #1E90FF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 16px;
+        }
+
+        .features {
+            padding: 60px 0;
+            background-color: #1f1f1f;
+        }
+
+        .features h3 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 28px;
+            color: #e0e0e0;
+        }
+
+        .feature-grid {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .feature-item {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 30%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-item a {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+        }
+
+        .feature-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-item h4 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .feature-item p {
+            font-size: 16px;
+            color: #bbb;
+        }
+
+        .button-81 {
+            background-color: #fff;
+            border: 0 solid #e2e8f0;
+            border-radius: 1.5rem;
+            box-sizing: border-box;
+            color: #1f1f1f;
+            cursor: pointer;
+            display: inline-block;
+            font-family: "Basier circle",-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1;
+            padding: 1rem 1.6rem;
+            text-align: center;
+            text-decoration: none #1f1f1f solid;
+            text-decoration-thickness: auto;
+            transition: all .1s cubic-bezier(.4, 0, .2, 1);
+            box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        .button-81:hover {
+            background-color: #1f1f1f;
+            color: #fff;
+        }
+
+        footer {
+            background-color: #1f1f1f;
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+
+        footer .footer-content {
+            margin: 20px 0;
+        }
+
+        footer p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        footer ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        footer ul li {
+            margin: 0 10px;
+        }
+
+        footer ul li a {
+            color: #888;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        footer ul li a:hover {
+            color: #1E90FF;
+        }
+        footer {
+        background-color: #121212; /* Updated background color */
+        padding: 40px 0;
+        text-align: center;
+        border-top: 1px solid #333;
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>GameMate</h1>
+            <nav>
+                <ul>
+                    <li><a href="/login">User Login</a></li>
+                    <li><a href="/admins">Admin Login</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Discover the Perfect Games for You</h2>
+            <p>Get personalized game recommendations based on your interests, playstyle, and preferences. GameMate is here to level up your gaming experience.</p><p>click here to get your game</p>
+            <a href="{% url 'game_recommendations' %}" class="button-81">Start</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <a href="/personalized-recommendations">
+                        <h4>Personalized Recommendations</h4>
+                        <p>Our advanced AI analyzes your gaming profile to suggest games tailored to your unique playstyle.</p>
+                    </a>
+                </div>
+                <div class="feature-item">
+                    <a href="{% url 'home' %}">
+                        <h4>Shop With Us</h4>
+                        <p>Explore a curated selection of games and find the best deals tailored to your preferences.</p>
+                    </a>
+                </div>
+                <div class="feature-item">
+                    <a href="https://video-game-recommendation-system-dux6yja3wbghwlejvjhsqj.streamlit.app/">
+                        <h4>Discover Games With Streamlit</h4>
+                        <p>Discover the Perfect Games for You with Streamlit. Our advanced AI analyzes your gaming profile to suggest games tailored to your unique playstyle.</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 GameMate. All Rights Reserved.</p>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <p>Follow us on:
+                <a href="#">Twitter</a> | 
+                <a href="#">Facebook</a> | 
+                <a href="#">Instagram</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,134 @@
+{% extends 'admins/cphder.html' %}
+{% load static %}
+
+{% block maincontent %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply Requests</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'styles/custom.css' %}">
+    <style>
+        .card {
+            width: 18rem; /* Set your desired width here */
+        }
+        .form-heading {
+            font-size: 24px; /* Adjust font size as needed */
+        }
+        .card .card-header.bg-primary {
+            background-color: #333 !important; /* Change blue color to gray */
+        }
+        .btn-primary {
+            background-color: #333; /* Change button color to gray */
+            border-color: #333; /* Set border color to gray */
+            color: white; /* Set text color to white */
+        }
+
+        .btn-primary:hover {
+            background-color: black; /* Change button color to black on hover */
+            border-color: black; /* Set border color to black on hover */
+            color: white; /* Set text color to white on hover */
+        }
+    </style>
+</head>
+<body>
+    
+
+<div class="container mt-5">
+    {% if success_message %}
+        <div class="alert alert-success" role="alert">
+            {{ success_message }}
+        </div>
+    {% endif %}
+
+    {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+    {% endif %}
+
+    <h1 class="text-center mb-4 form-heading">Supply Request Form</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post" action="{% url 'submit_supply_request' %}" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <input type="hidden" name="website_name" value="Riot Store">
+                <input type="hidden" name="request_date" value="{{ timezone.now }}">
+                
+                <div class="form-group">
+                    <label for="name">Product Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                    <div class="invalid-feedback">Please enter product name.</div>
+                </div>
+                {% comment %} <div class="form-group">
+                    <label for="category">Category:</label>
+                    <input type="text" class="form-control" id="category" name="category" required>
+                    <div class="invalid-feedback">Please enter category.</div>
+                </div> {% endcomment %}
+                
+                <div class="form-group">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" required>
+                    <div class="invalid-feedback">Please enter quantity.</div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+
+    <h1 class="text-center mb-4">Supply Requests</h1>
+
+    <div class="row justify-content-center">
+        {% for request in supply_requests %}
+            <div class="col-md-4 mb-4"> <!-- Adjust column size as needed -->
+                <div class="card" data-id="{{ request.id }}">
+                    <div class="card-header bg-primary text-white">
+                        {{ request.request_date }}
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Product Name:</strong> {{ request.name }}</p>
+                        {% comment %} <p class="card-text"><strong>Category:</strong> {{ request.category }}</p> {% endcomment %}
+                        <p class="card-text"><strong>Quantity:</strong> {{ request.quantity }}</p>
+                        {% if request.status == 'conformed' %}
+                            <p class="card-text"><span class="badge badge-success">Supply soon</span></p>
+                        {% elif request.status == 'rejected' %}
+                            <p class="card-text"><span class="badge badge-warning">rejected</span></p>
+                        {% else %}
+                            <p class="card-text"><span class="badge badge-warning">Pending</span></p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <form action="{% url 'delete_supply_request' request.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm delete-request">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-md-12">
+                <p class="text-center">No supply requests found.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</body>
+</html>
+{% endblock maincontent%}

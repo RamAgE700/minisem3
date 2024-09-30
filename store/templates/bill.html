@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load cart %}
+{% block title %} Eshop | Cart {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <h3 class="font-weight-light">Customer information</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                     
+                      
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in ck %}
+                        <tr><td>{{ user.name }}</td></tr>
+                        <tr><td>{{ user.email }}</td></tr>
+                        <tr><td>{{ user.phone }}</td></tr>
+                 
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col-6">
+       
+        <h1 class="font-weight-light">Bill</h1>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                 
+                    <th>Prodcut</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+        {% for order in orders %}
+                <tr>
+                
+                
+                    <td>{{ order.product.name }}</td>
+                    <td>{{ order.price|currency }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <th class="price">{{ order.quantity|multipy:order.price }}</th>
+                
+                  
+                </tr>
+            {% endfor %}
+            <tfoot>
+            	<tr>
+            		<td colspan="5"></td>
+            		<td colspan="1"><strong id="ttlsk"> </strong></td>
+            		<td></td>
+            	</tr>
+            </tfoot>
+        </table>
+    </div>
+    </div>
+    <hr>
+ 
+    
+
+    <!-- Modal -->
+<script>
+    function calcTotal() {
+        let sum = 0;
+        let price = document.querySelectorAll(".price");
+        for(let i=0; i<price.length; i++){
+            sum = sum + parseInt(price[i].innerHTML);
+        }
+        //let tbody = document.getElementById('ttls');
+        document.getElementById('ttlsk').innerHTML ="Total: "+sum+""
+       // alert(sum)
+    }
+</script>
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+    $( document ).ready(function() {
+        calcTotal()
+       // alert( "document loaded" );
+    });
+ 
+  
+    </script>
+</div>
+{% endblock %}

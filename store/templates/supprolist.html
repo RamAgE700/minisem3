@@ -1,0 +1,80 @@
+{% extends 'supnav.html' %}
+{% load static %}
+
+{% block maincontent %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        /* Adjust table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .btn-fw {
+            width: 100px; /* Fixed width for buttons */
+            margin-right: 10px;
+        }
+        .product-image {
+            max-width: 100px; /* Set the maximum width of the image */
+            max-height: 100px; /* Set the maximum height of the image */
+          }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Products List</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th> Product Name </th>
+                    <th> Date of supply </th>
+                    <th> Images </th>
+                    <th> Price </th>
+                    <th> Supply Charge  </th>
+                    <th> Description </th>
+                    <th> Quantity </th>
+                    
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in in_stock_ %}
+                                        <tr>
+                    <td>{{ i.product_name }}</td>
+                    <td>{{ i.date_of_supply }}</td>
+                    <td><img src="../media/image/{{ i.image }}" class="product-image"></td>
+                    <th>{{ i.price }}</th>
+                    <th>{{ i.supply_charge }}</th>
+                    <th>{{ i.description }} </th>
+                    <th>{{ i.number_of_items }}</th>
+                    
+                    
+                  {% endfor %}     
+                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock maincontent%}

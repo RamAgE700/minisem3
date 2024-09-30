@@ -1,0 +1,27 @@
+# views.py
+from django.shortcuts import render, redirect
+from django.conf import settings
+import stripe
+
+def process_payment(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    # Add code to process the payment using the Stripe API
+    # You'll need to retrieve and validate payment details from the form
+    # Handle success and failure scenarios accordingly
+    return redirect('cart')  # Redirect to the cart or another page
+<!-- payment.html -->
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Payment Details</h2>
+  <form action="{% url 'process_payment' %}" method="post" id="payment-form">
+    {% csrf_token %}
+    <!-- Add payment form fields here -->
+    <button type="submit">Submit Payment</button>
+  </form>
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    var stripe = Stripe('{{ stripe_public_key }}');
+    var elements = stripe.elements();
+    // Add additional JavaScript code for handling payment interactions
+  </script>
+{% endblock %}
